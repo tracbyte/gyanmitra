@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GyanMitra IVA — Student Support Assistant</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root{
+  --navy:#16264A;
+  --ink:#1A1D29;
+  --marigold:#E4A73B;
+  --teal:#1F8A76;
+  --paper:#FFFFFF;
+  --card:#F4F5F8;
+  --line:#DDE1EA;
+  --danger:#C1503E;
+  --green:#1F8A76;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Work Sans',sans-serif;color:var(--ink);background:var(--paper);}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px;}
+
+/* header */
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:6px;}
+h1{font-family:'Fraunces',serif;font-weight:600;font-size:32px;margin:0 0 8px;color:var(--navy);}
+.sub{font-size:14px;color:#4B5165;max-width:680px;margin:0 0 6px;}
+.api-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:20px;font-weight:600;}
+.api-badge.connected{background:#e6f7f4;color:var(--teal);border:1px solid #b2e0d8;}
+.api-badge.local{background:#fef8e7;color:#8a6200;border:1px solid #f0d98a;}
+.api-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+
+/* pipeline */
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;}
+.pipeline .step{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;transition:border-color .2s,box-shadow .2s;}
+.pipeline .step.active{border-color:var(--marigold);box-shadow:0 0 0 2px rgba(228,167,59,.3) inset;}
+.pipeline .step h4{margin:0 0 2px;font-size:12px;color:var(--navy);font-family:'Fraunces',serif;}
+.pipeline .step p{margin:0;font-size:10.5px;color:#5A6072;}
+
+/* layout */
+.panel{display:grid;grid-template-columns:1.45fr 1fr;gap:16px;}
+@media(max-width:720px){.panel{grid-template-columns:1fr;}}
+
+/* chat */
+.chat-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;height:540px;}
+.chat-head{background:var(--navy);color:#fff;padding:11px 15px;display:flex;align-items:center;gap:10px;}
+.chat-head-title{font-family:'Fraunces',serif;font-size:14px;}
+.chat-head-sub{font-size:11px;opacity:.65;margin-left:auto;}
+.chat-log{flex:1;padding:14px 15px;overflow-y:auto;background:#fff;display:flex;flex-direction:column;gap:8px;}
+.msg{max-width:82%;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.5;white-space:pre-wrap;}
+.msg.bot{background:var(--card);color:var(--ink);align-self:flex-start;}
+.msg.user{background:var(--navy);color:#fff;align-self:flex-end;}
+.msg.typing{background:var(--card);align-self:flex-start;color:#888;font-style:italic;}
+.msg b,.msg strong{font-weight:700;}
+.quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:6px 12px 10px;}
+.quick-replies button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:5px 11px;font-size:11.5px;cursor:pointer;color:var(--navy);transition:background .15s;}
+.quick-replies button:hover{background:var(--card);}
+.chat-input{display:flex;border-top:1px solid var(--line);}
+.chat-input input{flex:1;border:none;padding:11px 13px;font-size:13px;font-family:'Work Sans',sans-serif;outline:none;}
+.chat-input button{border:none;background:var(--marigold);color:var(--navy);padding:0 16px;font-weight:700;cursor:pointer;font-size:13px;}
+.chat-input button:hover{background:#d49a30;}
+
+/* sidebar */
+.side h3{font-family:'Fraunces',serif;font-size:14px;color:var(--navy);margin:0 0 9px;}
+.state-card{background:var(--card);border-radius:10px;padding:12px;margin-bottom:10px;font-size:12px;}
+.state-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);}
+.state-row:last-child{border-bottom:none;}
+.state-row span:first-child{color:#5A6072;}
+.state-row span:last-child{color:var(--navy);font-weight:600;}
+
+.escalation{background:#FBEAE7;border:1px solid #F0C6BE;border-radius:10px;padding:11px;font-size:11.5px;color:#7A2E22;display:none;margin-bottom:10px;}
+.escalation.show{display:block;}
+
+/* NLU result strip */
+.nlu-strip{background:#f0f4ff;border:1px solid #d0daff;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11.5px;display:none;}
+.nlu-strip.show{display:block;}
+.nlu-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.nlu-pill{padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.nlu-pill.intent{background:#dce7ff;color:#2a4aad;}
+.nlu-pill.conf{background:#e0f5f0;color:var(--teal);}
+.nlu-pill.entity{background:#fff3d4;color:#7a5500;}
+.nlu-pill.esc{background:#fbeae7;color:#7A2E22;}
+
+.log{margin-top:10px;background:var(--navy);color:#DCE2F0;border-radius:10px;padding:11px 13px;font-family:monospace;font-size:10.5px;max-height:170px;overflow-y:auto;}
+.log div{margin-bottom:3px;}
+.tag-nlu{color:#7FD1C0;}
+.tag-dm{color:#E4A73B;}
+.tag-act{color:#89A6FF;}
+.tag-lrn{color:#F0908A;}
+
+.note{font-size:11px;color:#8A90A3;margin-top:18px;line-height:1.6;}
+.reset{margin-top:8px;background:none;border:1px solid var(--line);color:#5A6072;padding:5px 11px;border-radius:7px;font-size:11px;cursor:pointer;}
+.reset:hover{background:var(--card);}
+
+/* tabs (teacher view) */
+.tabs{display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid var(--line);}
+.tab{padding:8px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#5A6072;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s;}
+.tab.active{color:var(--navy);border-bottom-color:var(--marigold);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* teacher panel */
+.esc-list{display:flex;flex-direction:column;gap:8px;}
+.esc-item{background:#FBEAE7;border:1px solid #F0C6BE;border-radius:8px;padding:10px 12px;font-size:12px;display:flex;justify-content:space-between;align-items:center;}
+.esc-item-info{color:#7A2E22;}
+.esc-item-info strong{display:block;font-size:13px;}
+.resolve-btn{border:none;background:var(--teal);color:#fff;padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600;}
+.empty{color:#8A90A3;font-size:12px;text-align:center;padding:20px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">IBM SkillsBuild · AI Automation &amp; Intelligent Solutions · SDG 4</div>
+  <h1>GyanMitra — Student Support IVA</h1>
+  <p class="sub">ML-powered intent classification (TF-IDF + Logistic Regression) · SQLite persistence · Flask REST API · escalation queue</p>
+  <div class="api-badge local" id="apiBadge"><div class="api-dot"></div><span id="apiBadgeText">Checking API…</span></div>
+
+  <!-- NLU Pipeline -->
+  <div class="pipeline" id="pipeline">
+    <div class="step" data-stage="nlu"><h4>NLU</h4><p>ML classifier detects intent + entity extraction</p></div>
+    <div class="step" data-stage="context"><h4>Context</h4><p>Session loaded from SQLite DB</p></div>
+    <div class="step" data-stage="dialog"><h4>Dialog manager</h4><p>Routes to correct node; checks escalation threshold</p></div>
+    <div class="step" data-stage="action"><h4>Action</h4><p>Reply sent; turn logged; state persisted to DB</p></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" data-tab="student">Student Chat</div>
+    <div class="tab" data-tab="teacher">Teacher Dashboard</div>
+  </div>
+
+  <!-- Student Chat Tab -->
+  <div class="tab-panel active" id="tab-student">
+    <div class="panel">
+      <div class="chat-card">
+        <div class="chat-head">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#E4A73B"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="chat-head-title">GyanMitra</span>
+          <span class="chat-head-sub" id="sessionLabel">Session loading…</span>
+        </div>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="quick-replies" id="quickReplies"></div>
+        <div class="chat-input">
+          <input id="userInput" type="text" placeholder="Type a message…" autocomplete="off"/>
+          <button id="sendBtn">Send</button>
+        </div>
+      </div>
+
+      <div class="side">
+        <h3>Agent state</h3>
+        <div class="nlu-strip" id="nluStrip">
+          <div style="font-size:10.5px;color:#5A6072;font-weight:600;text-transform:uppercase;letter-spacing:.1em;">Last NLU result</div>
+          <div class="nlu-row" id="nluRow"></div>
+        </div>
+        <div class="state-card" id="stateCard"></div>
+        <div class="escalation" id="escalationCard">
+          ⚠️ A teacher review has been flagged for a topic that keeps coming up. In a live deployment this routes to a human tutor queue.
+        </div>
+        <div class="log" id="turnLog"><div>Waiting for first message.</div></div>
+        <button class="reset" id="resetBtn">Reset conversation</button>
+        <p class="note">Replies are generated by a trained ML classifier (TF-IDF + Logistic Regression) backed by a Flask REST API and SQLite database — not an LLM. State persists across reloads via the real backend. This mirrors the watsonx Assistant architecture: NLU → Context → Dialog → Action.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher Tab -->
+  <div class="tab-panel" id="tab-teacher">
+    <h3 style="font-family:'Fraunces',serif;color:var(--navy);margin:0 0 14px;">Open Escalations</h3>
+    <p style="font-size:13px;color:#5A6072;margin:0 0 16px;">Topics where a student has been confused 2+ times. These are written to the SQLite escalation table by the backend.</p>
+    <div class="esc-list" id="escList"><div class="empty">Loading…</div></div>
+    <button class="reset" id="refreshEsc" style="margin-top:14px;">Refresh</button>
+  </div>
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────
+const API_BASE = "http://localhost:5050/api";
+
+// Generate stable IDs stored in sessionStorage (resets on tab close)
+let studentId = sessionStorage.getItem("gm_student_id");
+let sessionId = sessionStorage.getItem("gm_session_id");
+if (!studentId) { studentId = "student_" + Math.random().toString(36).slice(2,9); sessionStorage.setItem("gm_student_id", studentId); }
+if (!sessionId) { sessionId = "sess_" + Math.random().toString(36).slice(2,9); sessionStorage.setItem("gm_session_id", sessionId); }
+
+let apiMode = false;   // will be set true if health check passes
+let agentState = { subject: null, turns: 0, confusion: {} };
+
+// ── DOM refs ──────────────────────────────────────────────────────────────
+const chatLog      = document.getElementById('chatLog');
+const quickReplies = document.getElementById('quickReplies');
+const stateCard    = document.getElementById('stateCard');
+const escalCard    = document.getElementById('escalationCard');
+const turnLog      = document.getElementById('turnLog');
+const pipeline     = document.getElementById('pipeline');
+const input        = document.getElementById('userInput');
+const nluStrip     = document.getElementById('nluStrip');
+const nluRow       = document.getElementById('nluRow');
+const apiBadge     = document.getElementById('apiBadge');
+const apiBadgeText = document.getElementById('apiBadgeText');
+const sessionLabel = document.getElementById('sessionLabel');
+const escList      = document.getElementById('escList');
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function addMsg(text, who) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + who;
+  // render simple markdown bold (**text**)
+  d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  chatLog.appendChild(d);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  return d;
+}
+
+function setStage(stage) {
+  [...pipeline.children].forEach(c => c.classList.toggle('active', c.dataset.stage === stage));
+}
+
+function logLine(tag, label, text) {
+  const d = document.createElement('div');
+  d.innerHTML = `<span class="${tag}">[${label}]</span> ${text}`;
+  turnLog.prepend(d);
+}
+
+function renderState(s) {
+  agentState = s || agentState;
+  const flagged = Object.entries(agentState.confusion || {}).filter(([,v]) => v >= 2);
+  stateCard.innerHTML = [
+    ['Subject', agentState.subject || '—'],
+    ['Turns this session', agentState.turns],
+    ['Topics escalated', flagged.length],
+    ['Session ID', sessionId.slice(0,12) + '…'],
+  ].map(([k,v]) => `<div class="state-row"><span>${k}</span><span>${v}</span></div>`).join('');
+  escalCard.classList.toggle('show', flagged.length > 0);
+}
+
+function showNLU(intent, conf, subject, topic, escalated) {
+  nluStrip.classList.add('show');
+  nluRow.innerHTML = [
+    `<span class="nlu-pill intent">intent: ${intent}</span>`,
+    `<span class="nlu-pill conf">conf: ${(conf * 100).toFixed(0)}%</span>`,
+    subject ? `<span class="nlu-pill entity">subject: ${subject}</span>` : '',
+    topic   ? `<span class="nlu-pill entity">topic: ${topic}</span>` : '',
+    escalated ? `<span class="nlu-pill esc">⚠ escalated</span>` : '',
+  ].join('');
+}
+
+function setQuickReplies(list) {
+  quickReplies.innerHTML = '';
+  list.forEach(t => {
+    const b = document.createElement('button');
+    b.textContent = t;
+    b.onclick = () => handleMessage(t);
+    quickReplies.appendChild(b);
+  });
+}
+
+function typingIndicator() {
+  const d = addMsg('GyanMitra is typing…', 'typing');
+  return d;
+}
+
+// ── API call ──────────────────────────────────────────────────────────────
+async function callAPI(message) {
+  const res = await fetch(`${API_BASE}/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ student_id: studentId, session_id: sessionId, message }),
+  });
+  if (!res.ok) throw new Error('API error ' + res.status);
+  return res.json();
+}
+
+// ── Local fallback NLU (mirrors old prototype, used when API is down) ─────
+const LOCAL_INTENTS = {
+  greeting: ["hi","hello","hey","namaste","good morning","yo"],
+  ask_help: ["help","stuck","doubt","confused","explain","understand","don't get"],
+  request_practice: ["practice","quiz","question","test me","solve"],
+  say_thanks: ["thanks","thank you","appreciate","got it"],
+  still_confused: ["still confused","don't understand","still stuck","not clear","say again"],
+  goodbye: ["bye","goodbye","done","see you"],
+};
+const LOCAL_TIPS = {
+  fractions: "Line up the denominators first — once they match, you only add or subtract the numerators.",
+  percentage: "Think of 'percent' as 'per hundred'. 20% of 150 = 0.20 × 150 = 30.",
+  geometry: "Draw the shape before solving. Label all given measurements on your sketch.",
+  gravity: "Gravity pulls masses together. Earth pulls at ~10 m/s².",
+  photosynthesis: "Plants take in CO₂ + water → (sunlight) → glucose + oxygen.",
+  grammar: "Read the sentence aloud — your ear catches mistakes before your eyes do.",
+};
+
+function localNLU(text) {
+  const t = text.toLowerCase();
+  let intent = 'fallback', conf = 0.5;
+  for (const [k, phrases] of Object.entries(LOCAL_INTENTS)) {
+    if (phrases.some(p => t.includes(p))) { intent = k; break; }
+  }
+  const subjects = { math: ["math","fraction","geometry","algebra","percentage"], science: ["science","photosynthesis","gravity","atom","chemistry"], english: ["english","grammar","essay"] };
+  let subject = null;
+  for (const [s, kws] of Object.entries(subjects)) { if (kws.some(k => t.includes(k))) { subject = s; break; } }
+  let topic = Object.keys(LOCAL_TIPS).find(tp => t.includes(tp)) || null;
+  return { intent, confidence: conf, subject, topic, escalated: false };
+}
+
+function localDialog(intent, subject, topic) {
+  if (intent === 'greeting') return "Hi! I'm GyanMitra. Which subject are you working on?";
+  if (intent === 'ask_help') {
+    if (topic) return `📚 **${topic.charAt(0).toUpperCase()+topic.slice(1)}**\n\n${LOCAL_TIPS[topic] || 'Let me help you with that.'}`;
+    if (subject) return `Sure! Which ${subject} topic? E.g. ${Object.keys(LOCAL_TIPS).slice(0,3).join(', ')}.`;
+    return "Happy to help! Which subject — Maths, Science, or English?";
+  }
+  if (intent === 'still_confused') return "Let me try a different angle. Can you tell me the exact topic you're stuck on?";
+  if (intent === 'request_practice') return subject ? `Here's a ${subject} practice question: (full question bank in API mode).` : "Which subject — Maths, Science, or English?";
+  if (intent === 'say_thanks') return "Anytime! Want to keep going or try a practice question?";
+  if (intent === 'goodbye') return "Good session! Come back whenever you're stuck. 📖";
+  return "I didn't quite catch that. Ask for help with a topic or request a practice question.";
+}
+
+const DEFAULT_QR = {
+  greeting: ['I need help with Math', 'Quiz me on Science', 'Bye'],
+  ask_help: ['Still confused', 'Thanks, got it!', 'Practice question'],
+  still_confused: ['Thanks, makes sense now', 'One more time please'],
+  request_practice: ['Another question', 'Different topic', 'Thanks'],
+  say_thanks: ['One more question', 'Bye'],
+  goodbye: ['Start again'],
+  fallback: ['I need help', 'Practice question'],
+};
+
+// ── Main message handler ──────────────────────────────────────────────────
+async function handleMessage(text) {
+  if (!text.trim()) return;
+  addMsg(text, 'user');
+  input.value = '';
+  quickReplies.innerHTML = '';
+
+  const typing = typingIndicator();
+  setStage('nlu');
+
+  let reply, intent, confidence, subject, topic, escalated, session;
+
+  try {
+    if (apiMode) {
+      await new Promise(r => setTimeout(r, 300));
+      setStage('context');
+      const data = await callAPI(text);
+      reply = data.reply;
+      intent = data.intent;
+      confidence = data.confidence;
+      subject = data.subject;
+      topic = data.topic;
+      escalated = data.escalated;
+      session = data.session;
+    } else {
+      await new Promise(r => setTimeout(r, 200));
+      setStage('context');
+      const nlu = localNLU(text);
+      intent = nlu.intent; confidence = nlu.confidence;
+      subject = nlu.subject; topic = nlu.topic; escalated = false;
+      reply = localDialog(intent, subject, topic);
+      agentState.turns = (agentState.turns || 0) + 1;
+      session = agentState;
+    }
+
+    setStage('dialog');
+    await new Promise(r => setTimeout(r, 150));
+    setStage('action');
+
+    typing.remove();
+    addMsg(reply, 'bot');
+    showNLU(intent, confidence, subject, topic, escalated);
+    renderState(session);
+    setQuickReplies(DEFAULT_QR[intent] || DEFAULT_QR.fallback);
+
+    logLine('tag-nlu', 'NLU', `intent=<b>${intent}</b> conf=${(confidence*100).toFixed(0)}%`);
+    if (subject || topic) logLine('tag-dm', 'ENTITY', [subject && `subj=${subject}`, topic && `topic=${topic}`].filter(Boolean).join(' '));
+    logLine('tag-act', 'DIALOG', `routed → "${intent}" node${escalated ? ' ⚠ escalated' : ''}`);
+    logLine('tag-lrn', 'DB', apiMode ? 'turn logged to SQLite' : 'local mode (no DB)');
+
+  } catch (err) {
+    typing.remove();
+    addMsg("Sorry, couldn't reach the backend right now. Try again.", 'bot');
+    console.error(err);
+  }
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'teacher') loadEscalations();
+  });
+});
+
+// ── Teacher dashboard ──────────────────────────────────────────────────────
+async function loadEscalations() {
+  escList.innerHTML = '<div class="empty">Loading…</div>';
+  if (!apiMode) { escList.innerHTML = '<div class="empty">Escalation table requires the Flask API to be running.</div>'; return; }
+  try {
+    const data = await fetch(`${API_BASE}/escalations`).then(r => r.json());
+    if (!data.escalations.length) {
+      escList.innerHTML = '<div class="empty">No open escalations.</div>';
+      return;
+    }
+    escList.innerHTML = '';
+    data.escalations.forEach(e => {
+      const div = document.createElement('div');
+      div.className = 'esc-item';
+      div.innerHTML = `
+        <div class="esc-item-info">
+          <strong>${e.topic}</strong>
+          Student: ${e.student_id} · Confusion count: ${e.count} · ${e.flagged_at.slice(0,16)}
+        </div>
+        <button class="resolve-btn" data-id="${e.id}">Resolve</button>`;
+      escList.appendChild(div);
+    });
+    document.querySelectorAll('.resolve-btn').forEach(btn => {
+      btn.onclick = async () => {
+        await fetch(`${API_BASE}/escalations/${btn.dataset.id}/resolve`, { method: 'POST' });
+        loadEscalations();
+      };
+    });
+  } catch (e) { escList.innerHTML = '<div class="empty">Could not load escalations.</div>'; }
+}
+
+document.getElementById('refreshEsc').onclick = loadEscalations;
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+async function checkAPI() {
+  try {
+    const r = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(2000) });
+    if (r.ok) {
+      apiMode = true;
+      apiBadge.className = 'api-badge connected';
+      apiBadgeText.textContent = 'Connected to Flask API (ML + SQLite)';
+    }
+  } catch (_) {
+    apiBadge.className = 'api-badge local';
+    apiBadgeText.textContent = 'Local mode — start backend for full ML + DB features';
+  }
+}
+
+async function boot() {
+  await checkAPI();
+  sessionLabel.textContent = apiMode ? 'Backed by Flask + SQLite' : 'Local mode';
+  renderState(agentState);
+
+  if (apiMode) {
+    // Fetch existing session if any
+    try {
+      const r = await fetch(`${API_BASE}/session/${sessionId}`);
+      if (r.ok) {
+        const d = await r.json();
+        agentState = d.session;
+        renderState(agentState);
+      }
+    } catch (_) {}
+  }
+
+  const returning = agentState.turns > 0;
+  setQuickReplies(['Hi', 'I need help with Maths', 'Quiz me on Science', 'Explain photosynthesis']);
+  addMsg(returning
+    ? `Welcome back! You've had ${agentState.turns} turns this session. What would you like to work on?`
+    : "Hi! I'm GyanMitra, your study support assistant. Ask me anything about Maths, Science, or English, or request a practice question.",
+    'bot');
+}
+
+document.getElementById('sendBtn').onclick = () => handleMessage(input.value);
+input.addEventListener('keydown', e => { if (e.key === 'Enter') handleMessage(input.value); });
+
+document.getElementById('resetBtn').onclick = async () => {
+  agentState = { subject: null, turns: 0, confusion: {} };
+  chatLog.innerHTML = '';
+  turnLog.innerHTML = '<div>Conversation reset.</div>';
+  nluStrip.classList.remove('show');
+  sessionId = 'sess_' + Math.random().toString(36).slice(2, 9);
+  sessionStorage.setItem('gm_session_id', sessionId);
+  renderState(agentState);
+  boot();
+};
+
+boot();
+</script>
+</body>
+</html>

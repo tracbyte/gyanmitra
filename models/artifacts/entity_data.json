@@ -1,0 +1,58 @@
+{
+  "subjects": {
+    "math": [
+      "math",
+      "maths",
+      "mathematics",
+      "fraction",
+      "fractions",
+      "percentage",
+      "percentages",
+      "geometry",
+      "algebra",
+      "arithmetic",
+      "number",
+      "calculation",
+      "equation"
+    ],
+    "science": [
+      "science",
+      "biology",
+      "physics",
+      "chemistry",
+      "photosynthesis",
+      "gravity",
+      "atom",
+      "atoms",
+      "molecule",
+      "energy",
+      "force",
+      "cell",
+      "cells",
+      "ecosystem"
+    ],
+    "english": [
+      "english",
+      "grammar",
+      "essay",
+      "comprehension",
+      "vocabulary",
+      "writing",
+      "reading",
+      "sentence",
+      "verb",
+      "noun",
+      "tense"
+    ]
+  },
+  "topics": {
+    "fractions": "Line up the denominators first \u2014 once they match, you only add or subtract the numerators. Think of the denominator as the size of each slice, and the numerator as how many slices you have.",
+    "percentage": "Think of 'percent' as 'per hundred'. So 20% = 20/100 = 0.20. To find 20% of 150, multiply: 0.20 \u00d7 150 = 30.",
+    "geometry": "Always draw the shape before solving. Most geometry mistakes come from working blind. Label all given measurements on your sketch first.",
+    "gravity": "Gravity is a pull between any two masses \u2014 the bigger the mass, the stronger the pull. Earth's gravity pulls everything toward its centre at about 9.8 m/s\u00b2 (we round to 10 m/s\u00b2).",
+    "photosynthesis": "Plants take in CO\u2082 and water, and using sunlight, convert them into glucose (food) and oxygen. The chlorophyll in leaves captures the sunlight energy.",
+    "grammar": "Read the sentence aloud \u2014 your ear catches grammar mistakes before your eyes do. Then check: does each verb agree with its subject? Are the tenses consistent?",
+    "algebra": "Algebra is about finding the unknown. Whatever you do to one side of the equation, do to the other side too \u2014 that keeps the balance.",
+    "atom": "An atom has a nucleus (protons + neutrons) in the centre, with electrons orbiting around it. Protons carry a positive charge, electrons carry a negative charge, neutrons are neutral."
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "fractions": {
+    "tip": "Line up the denominators first \u2014 once they match, you only add or subtract the numerators. Think of the denominator as the size of each slice, and the numerator as how many slices you have.",
+    "practice": [
+      {
+        "q": "What is 1/4 + 2/4?",
+        "a": "3/4",
+        "hint": "Same denominator \u2014 just add the numerators."
+      },
+      {
+        "q": "Simplify 6/8.",
+        "a": "3/4",
+        "hint": "Divide both top and bottom by 2."
+      },
+      {
+        "q": "What is 3/5 - 1/5?",
+        "a": "2/5",
+        "hint": "Same denominator \u2014 subtract numerators."
+      }
+    ]
+  },
+  "percentage": {
+    "tip": "Think of 'percent' as 'per hundred'. So 20% = 20/100 = 0.20. To find 20% of 150, multiply: 0.20 \u00d7 150 = 30.",
+    "practice": [
+      {
+        "q": "What is 10% of 200?",
+        "a": "20",
+        "hint": "10% = 0.10, so 0.10 \u00d7 200."
+      },
+      {
+        "q": "What is 25% of 80?",
+        "a": "20",
+        "hint": "25% = 1/4, so divide 80 by 4."
+      },
+      {
+        "q": "If a shirt costs \u20b9500 and is on 20% discount, how much do you save?",
+        "a": "\u20b9100",
+        "hint": "20% of 500 = 0.20 \u00d7 500."
+      }
+    ]
+  },
+  "geometry": {
+    "tip": "Always draw the shape before solving. Most geometry mistakes come from working blind. Label all given measurements on your sketch first.",
+    "practice": [
+      {
+        "q": "What is the area of a rectangle 6 cm \u00d7 4 cm?",
+        "a": "24 cm\u00b2",
+        "hint": "Area = length \u00d7 width."
+      },
+      {
+        "q": "What is the perimeter of a square with side 5 cm?",
+        "a": "20 cm",
+        "hint": "Perimeter = 4 \u00d7 side."
+      },
+      {
+        "q": "A triangle has base 8 cm and height 5 cm. What is its area?",
+        "a": "20 cm\u00b2",
+        "hint": "Area = \u00bd \u00d7 base \u00d7 height."
+      }
+    ]
+  },
+  "gravity": {
+    "tip": "Gravity is a pull between any two masses \u2014 the bigger the mass, the stronger the pull. Earth's gravity pulls everything toward its centre at about 9.8 m/s\u00b2 (we round to 10 m/s\u00b2).",
+    "practice": [
+      {
+        "q": "If you drop a ball and a feather in a vacuum, which hits the ground first?",
+        "a": "Both at the same time",
+        "hint": "Without air resistance, gravity acts equally on all masses."
+      },
+      {
+        "q": "What is the weight of a 5 kg object on Earth? (g = 10 m/s\u00b2)",
+        "a": "50 N",
+        "hint": "Weight = mass \u00d7 g."
+      }
+    ]
+  },
+  "photosynthesis": {
+    "tip": "Plants take in CO\u2082 and water, and using sunlight, convert them into glucose (food) and oxygen. The chlorophyll in leaves captures the sunlight energy.",
+    "practice": [
+      {
+        "q": "What gas do plants take in during photosynthesis?",
+        "a": "Carbon dioxide (CO\u2082)",
+        "hint": "Plants absorb CO\u2082 through tiny pores called stomata."
+      },
+      {
+        "q": "What is the main product plants make during photosynthesis?",
+        "a": "Glucose",
+        "hint": "Glucose is the plant's food/energy store."
+      },
+      {
+        "q": "Which part of the plant contains chlorophyll?",
+        "a": "Leaves (chloroplasts)",
+        "hint": "Chlorophyll is the green pigment that captures sunlight."
+      }
+    ]
+  },
+  "grammar": {
+    "tip": "Read the sentence aloud \u2014 your ear catches grammar mistakes before your eyes do. Then check: does each verb agree with its subject? Are the tenses consistent?",
+    "practice": [
+      {
+        "q": "Which is correct? 'She don't know' or 'She doesn't know'?",
+        "a": "She doesn't know",
+        "hint": "Third person singular uses 'doesn't', not 'don't'."
+      },
+      {
+        "q": "Fill in the blank: 'He __ (go) to school yesterday.'",
+        "a": "went",
+        "hint": "'Yesterday' signals past tense \u2014 use the past form of 'go'."
+      }
+    ]
+  },
+  "algebra": {
+    "tip": "Algebra is about finding the unknown. Whatever you do to one side of the equation, do to the other side too \u2014 that keeps the balance.",
+    "practice": [
+      {
+        "q": "Solve: x + 5 = 12",
+        "a": "x = 7",
+        "hint": "Subtract 5 from both sides."
+      },
+      {
+        "q": "Solve: 3x = 18",
+        "a": "x = 6",
+        "hint": "Divide both sides by 3."
+      }
+    ]
+  },
+  "atom": {
+    "tip": "An atom has a nucleus (protons + neutrons) in the centre, with electrons orbiting around it. Protons carry a positive charge, electrons carry a negative charge, neutrons are neutral.",
+    "practice": [
+      {
+        "q": "What particles are found in the nucleus of an atom?",
+        "a": "Protons and neutrons",
+        "hint": "Remember: the nucleus is in the centre."
+      },
+      {
+        "q": "Which particle has a negative charge?",
+        "a": "Electron",
+        "hint": "Electrons orbit the nucleus."
+      }
+    ]
+  }
+}
